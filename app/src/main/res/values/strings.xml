@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Referral</string>
+    <string name="as_guest"><u>As guest?</u></string>
+    <string name="forgot_paasword_"><u>Forgot Password?</u></string>
+    <string name="password">Enter your password</string>
+    <string name="log_in">Sign In</string>
+    <string name="error_email_required">Verification code is required</string>
+    <string name="error_invalid_password">Invalid password</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_numbers_only">Wrong verification code</string>
+</resources>
