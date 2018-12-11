@@ -11,16 +11,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME="Klabu.db";
     public static final String TABLE_NAME="Users";
     public static final String COL_0="dbId";
-    public static final String COL_1="id";
-    public static final String COL_2="name";
-    public static final String COL_3="email";
-    public static final String COL_4="mKey";
-    public static final String COL_5="Address";
+    public static final String COL_1="UserId";
+    public static final String COL_2="RoleId";
+    public static final String COL_3="FirstName";
+    public static final String COL_4="MiddleName";
+    public static final String COL_5="SurName";
+    public static final String COL_6="JobRefNo";
+    public static final String COL_7="mKey";
 
-    public static final String TABLE_CHAT="Chat";
+
+    public static final String TABLE_VILLAGE_JURISDICTION="chw_village_jurisdiction";
     public static final String COL_8="dbId";
-    public static final String COL_9="Status";
-    public static final String COL_10="RowKey";
+    public static final String COL_9="VillageId";
+    public static final String COL_10="VillageName";
+    public static final String COL_11="VillageRefNo";
     public DatabaseHelper(Context context) {
         super(context,DATABASE_NAME,null,1);
 
@@ -28,27 +32,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,id VARCHAR(200),name VARCHAR(200),email VARCHAR(200),mKey VARCHAR(200),Address VARCHAR(200))");
-        db.execSQL("CREATE TABLE " + TABLE_CHAT + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,Status VARCHAR(200),RowKey VARCHAR(200))");
+        db.execSQL("CREATE TABLE " + TABLE_NAME + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR(200),RoleId VARCHAR(200),FirstName VARCHAR(200),MiddleName VARCHAR(200),SurName VARCHAR(200),JobRefNo VARCHAR(200),mKey VARCHAR(200))");
+        db.execSQL("CREATE TABLE " + TABLE_VILLAGE_JURISDICTION + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,VillageId VARCHAR(200),VillageName VARCHAR(200),VillageRefNo VARCHAR(200))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " +TABLE_CHAT);
+        db.execSQL("DROP TABLE IF EXISTS " +TABLE_VILLAGE_JURISDICTION);
         onCreate(db);
 
     }
 
-    public boolean insertData(String id,String name,String email,String mKey,String address)
+    public boolean insertData(String UserId,String RoleId,String FirstName,String MiddleName,String SurName,String JobRefNo,String mKey)
     {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
-        contentValues.put(COL_1,id);
-        contentValues.put(COL_2, name);
-        contentValues.put(COL_3, email);
-        contentValues.put(COL_4, mKey);
-        contentValues.put(COL_5, address);
+        contentValues.put(COL_1,UserId);
+        contentValues.put(COL_2, RoleId);
+        contentValues.put(COL_3, FirstName);
+        contentValues.put(COL_4, MiddleName);
+        contentValues.put(COL_5, SurName);
+        contentValues.put(COL_6, JobRefNo);
+        contentValues.put(COL_7, mKey);
 
         long result=db.insert(TABLE_NAME,null,contentValues);
 
@@ -59,55 +65,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getAllData()
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        Cursor res=db.rawQuery("SELECT * FROM " +TABLE_NAME,null);
-        return res;
-    }
 
-    public Cursor getSpecificData(String name)
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        Cursor res=db.rawQuery("SELECT * FROM " +TABLE_NAME+ " WHERE " +COL_2+ " LIKE '%" +name+ "%';",null);
-        return res;
-    }
-
-    public boolean updateData(String id,String name,String marks,String grade)
+    public boolean insertVillageJurisdiction(String VillageId,String VillageName,String VillageRefNo)
     {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
-        contentValues.put(COL_1,id);
-        contentValues.put(COL_2,name);
-        contentValues.put(COL_3, marks);
-        //contentValues.put(COL_4, grade);
+        contentValues.put(COL_9, VillageId);
+        contentValues.put(COL_10, VillageName);
+        contentValues.put(COL_11, VillageRefNo);
 
 
-        db.update(TABLE_NAME,contentValues, "id = ?",new String[] {id});
+        long result=db.insert(TABLE_VILLAGE_JURISDICTION,null,contentValues);
 
-        return true;
+        if(result==-1)
+            return false;
+        else
+            return true;
 
     }
 
-    public Integer deleteData(String id)
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        return db.delete(TABLE_NAME, " id = ?",new String[] {id});
-    }
 
-    public Cursor average()
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        Cursor res=db.rawQuery("SELECT AVG(MARKS) FROM " + TABLE_NAME, null);
-        return res;
-    }
-
-    public Cursor getUserId(String Key)
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        Cursor res=db.rawQuery("SELECT id,name FROM " +TABLE_NAME,null);
-        return res;
-    }
 
 
 
@@ -125,61 +102,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateCredentials(String id,String name,String email,String mKey,String address)
+    public boolean updateCredentials(String UserId,String RoleId,String FirstName,String MiddleName,String SurName,String JobRefNo,String mKey)
     {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
-        contentValues.put(COL_1,id);
-        contentValues.put(COL_2, name);
-        contentValues.put(COL_3, email);
-        contentValues.put(COL_5, address);
-
-        //contentValues.put(COL_5, address);
+        contentValues.put(COL_1,UserId);
+        contentValues.put(COL_2, RoleId);
+        contentValues.put(COL_3, FirstName);
+        contentValues.put(COL_4, MiddleName);
+        contentValues.put(COL_5, SurName);
+        contentValues.put(COL_6, JobRefNo);
+        contentValues.put(COL_7, mKey);
 
 
         db.update(TABLE_NAME,contentValues, "mKey = ?",new String[] {mKey});
 
         return true;
 
-    }
-
-    public boolean insertChatWallStatus(String Status,String RowKey)
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        ContentValues contentValues=new ContentValues();
-        contentValues.put(COL_9,Status);
-        contentValues.put(COL_10, RowKey);
-
-
-        long result=db.insert(TABLE_CHAT,null,contentValues);
-
-        if(result==-1)
-            return false;
-        else
-            return true;
-
-    }
-
-    public boolean updateChatWallStatus(String Status,String RowKey)
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        ContentValues contentValues=new ContentValues();
-        contentValues.put(COL_9,Status);
-
-        //contentValues.put(COL_5, address);
-
-
-        db.update(TABLE_CHAT,contentValues, "RowKey = ?",new String[] {RowKey});
-
-        return true;
-
-    }
-
-    public Cursor checkChatStatus()
-    {
-        SQLiteDatabase db=this.getWritableDatabase();
-        Cursor res=db.rawQuery("SELECT * FROM " +TABLE_CHAT,null);
-        return res;
     }
 
 
