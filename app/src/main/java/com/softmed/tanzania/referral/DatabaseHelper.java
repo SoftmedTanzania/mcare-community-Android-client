@@ -25,6 +25,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_9="VillageId";
     public static final String COL_10="VillageName";
     public static final String COL_11="VillageRefNo";
+
+
+    public static final String TABLE_FACILITY_JURISDICTION="chw_facility_jurisdiction";
+    public static final String COL_12="dbId";
+    public static final String COL_13="FacilityId";
+    public static final String COL_14="FacilityName";
+    public static final String COL_15="PhysicalAddress";
+    public static final String COL_16="FacilityRefNo";
     public DatabaseHelper(Context context) {
         super(context,DATABASE_NAME,null,1);
 
@@ -34,12 +42,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR(200),RoleId VARCHAR(200),FirstName VARCHAR(200),MiddleName VARCHAR(200),SurName VARCHAR(200),JobRefNo VARCHAR(200),mKey VARCHAR(200))");
         db.execSQL("CREATE TABLE " + TABLE_VILLAGE_JURISDICTION + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,VillageId VARCHAR(200),VillageName VARCHAR(200),VillageRefNo VARCHAR(200))");
+        db.execSQL("CREATE TABLE " + TABLE_FACILITY_JURISDICTION + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,FacilityId VARCHAR(200),FacilityName VARCHAR(200),PhysicalAddress VARCHAR(500),FacilityRefNo VARCHAR(200))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_VILLAGE_JURISDICTION);
+        db.execSQL("DROP TABLE IF EXISTS " +TABLE_FACILITY_JURISDICTION);
         onCreate(db);
 
     }
@@ -86,6 +96,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+    public boolean insertFacilityJurisdiction(String FacilityId,String FacilityName,String PhysicalAddress,String FacilityRefNo)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(COL_13, FacilityId);
+        contentValues.put(COL_14, FacilityName);
+        contentValues.put(COL_15, PhysicalAddress);
+        contentValues.put(COL_16, FacilityRefNo);
+
+
+        long result=db.insert(TABLE_FACILITY_JURISDICTION,null,contentValues);
+
+        if(result==-1)
+            return false;
+        else
+            return true;
+
+    }
+
+
+
 
 
     public Cursor getAllCredentials()
@@ -119,6 +150,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return true;
 
+    }
+
+
+    public Integer deleteEntireTable(String TableName)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        return db.delete(TableName,null,null);
     }
 
 

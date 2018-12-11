@@ -50,7 +50,7 @@ public class SignIn extends Activity implements View.OnClickListener {
     private String email;
     private String password;
 
-    public  String UserId, UserName, Addr;
+    public  String UserId,WardId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,8 @@ public class SignIn extends Activity implements View.OnClickListener {
                     } else {
 
 
-
+                        UserId=jObj.getString("UserId");
+                        WardId=jObj.getString("WardId");
                         String UserId = jObj.getString("UserId");
                         String RoleId = jObj.getString("RoleId");
                         String FirstName = jObj.getString("FirstName");
@@ -138,7 +139,7 @@ public class SignIn extends Activity implements View.OnClickListener {
                         String mKey="User";
                         updateCredentials(UserId,RoleId,FirstName,MiddleName,SurName,JobRefNo,mKey);
 
-                        if(RoleId.equals("1")){getVillageJurisdictions();}else{}
+                        if(RoleId.equals("1")){getVillageJurisdictions();getFacilityJurisdictions();}else{}
 
 
                        /* Intent intent = new Intent(
@@ -280,6 +281,7 @@ public class SignIn extends Activity implements View.OnClickListener {
                             String VillageName=obj.getString("VillageName");
                             String VillageRefNo=obj.getString("VillageRefNo");
 
+                            myDb.deleteEntireTable("chw_village_jurisdiction");
                            boolean success= myDb.insertVillageJurisdiction(VillageId,VillageName,VillageRefNo);
                            if(success==true){Toast.makeText(getBaseContext(), "Locations configuration is ready", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Error while configuring locations", Toast.LENGTH_LONG).show();}
                         } catch (JSONException e) {
@@ -302,8 +304,79 @@ public class SignIn extends Activity implements View.OnClickListener {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                String UserId="1";
+
                 params.put("UserId",UserId);
+
+
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getBaseContext());
+        //Adding our request to the queue
+        requestQueue.add(stringRequest);
+    }
+
+
+
+
+
+    private void getFacilityJurisdictions(){
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.chw_jurisdiction_facilities, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+
+
+                //Displaying our grid
+                try {
+                    JSONObject object = new JSONObject(s);
+                    JSONArray jsonarray= object.getJSONArray("result");
+                    for(int i = 0; i<jsonarray.length(); i++){
+
+                        //Creating a json object of the current index
+                        JSONObject obj = null;
+                        try {
+                            //getting json object from current index
+                            obj = jsonarray.getJSONObject(i);
+
+
+                            //getting image url and title from json object
+
+                            String FacilityId=obj.getString("FacilityId");
+                            String FacilityName=obj.getString("FacilityName");
+                            String PhysicalAddress=obj.getString("PhysicalAddress");
+                            String FacilityRefNo=obj.getString("FacilityRefNo");
+
+                            myDb.deleteEntireTable("chw_facility_jurisdiction");
+                            boolean success= myDb.insertFacilityJurisdiction(FacilityId,FacilityName,PhysicalAddress,FacilityRefNo);
+                            if(success==true){Toast.makeText(getBaseContext(), "Facilities configuration is ready", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Error while configuring Facilities", Toast.LENGTH_LONG).show();}
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("ggg", volleyError.toString());
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("column_name","WardId");
+                params.put("search_value",WardId);
 
 
 
