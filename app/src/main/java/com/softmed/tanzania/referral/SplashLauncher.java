@@ -42,13 +42,7 @@ public class SplashLauncher extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (new SessionManager(getBaseContext()).isLoggedIn()) {
-            /*Intent in = new Intent(getBaseContext(), Landing.class);
-            in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            in.putExtra("access","signin");
-            startActivity(in);
-            finish();*/
-        }
+
         setContentView(R.layout.activity_splash_launcher);
         final RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
         handler = new Handler();

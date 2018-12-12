@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +56,7 @@ public class SignIn extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionManager = new SessionManager(getBaseContext());
+       // sessionManager = new SessionManager(getBaseContext());
         setContentView(R.layout.activity_sign_in);
         myDb = new DatabaseHelper(getBaseContext());
         tvPrompt=(TextView) findViewById(R.id.prompt);
@@ -80,7 +81,41 @@ public class SignIn extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_submit_login:
                 if (checkEmpty()) {
-                    SignIn(email, password);
+
+
+                    boolean network_connection= false;
+                    try {
+                        network_connection = Config.isConnected();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(network_connection==true){SignIn(email, password);}else{
+
+                        Cursor res = myDb.getLocalCreds("row");
+
+                        if (res.getCount() == 0) {
+
+                            return;
+                        }
+
+                        StringBuffer buffer = new StringBuffer();
+                        while (res.moveToNext()) {
+
+
+                           String JobRefNo = res.getString(1);
+                           String Password = res.getString(2);
+
+                           if(JobRefNo.equals(email)&&Password.equals(password))
+                            {Toast.makeText(getBaseContext(), "You are currently logged into the local environment", Toast.LENGTH_LONG).show();}
+                            else{Toast.makeText(getBaseContext(), "Incorrect credentials", Toast.LENGTH_LONG).show();}
+
+                        }
+
+                    }
+
+
 
                 }
                 break;
@@ -127,7 +162,9 @@ public class SignIn extends Activity implements View.OnClickListener {
                         hideDialog();
                     } else {
 
-
+                        String row="row";
+                        boolean cred_success=myDb.updateLocalCreds(email,password,row);
+                        if(cred_success==true){Toast.makeText(getBaseContext(), "Local authentication updated", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Local authentication environment setup failed", Toast.LENGTH_LONG).show();}
                         UserId=jObj.getString("UserId");
                         WardId=jObj.getString("WardId");
                         String UserId = jObj.getString("UserId");
@@ -150,7 +187,7 @@ public class SignIn extends Activity implements View.OnClickListener {
 
 
 
-                        sessionManager.setLogin(true);
+
                         hideDialog();
                         finish();
                     }
