@@ -108,7 +108,13 @@ public class SignIn extends Activity implements View.OnClickListener {
                            String Password = res.getString(2);
 
                            if(JobRefNo.equals(email)&&Password.equals(password))
-                            {Toast.makeText(getBaseContext(), "You are currently logged into the local environment", Toast.LENGTH_LONG).show();}
+                            {Toast.makeText(getBaseContext(), "You are currently logged into the local environment", Toast.LENGTH_LONG).show();
+                              Intent intent = new Intent(
+                                        getBaseContext(),ChwHomePage.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                startActivity(intent);
+                            }
                             else{Toast.makeText(getBaseContext(), "Incorrect credentials", Toast.LENGTH_LONG).show();}
 
                         }
@@ -179,11 +185,11 @@ public class SignIn extends Activity implements View.OnClickListener {
                         if(RoleId.equals("1")){getVillageJurisdictions();getFacilityJurisdictions();}else{}
 
 
-                       /* Intent intent = new Intent(
-                                getBaseContext(),Landing.class);
+                       Intent intent = new Intent(
+                                getBaseContext(),ChwHomePage.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("access","signin");
-                        startActivity(intent);*/
+
+                        startActivity(intent);
 
 
 
