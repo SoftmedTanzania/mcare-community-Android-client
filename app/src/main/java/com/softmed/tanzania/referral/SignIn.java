@@ -157,6 +157,7 @@ public class SignIn extends Activity implements View.OnClickListener {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.login_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
                 JSONObject jObj = null;
                 try {
                     jObj = new JSONObject(response);
@@ -173,6 +174,8 @@ public class SignIn extends Activity implements View.OnClickListener {
                         if(cred_success==true){Toast.makeText(getBaseContext(), "Local authentication updated", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Local authentication environment setup failed", Toast.LENGTH_LONG).show();}
                         UserId=jObj.getString("UserId");
                         WardId=jObj.getString("WardId");
+                        String WardName=jObj.getString("WardName");
+                        String WardRefNo=jObj.getString("WardRefNo");
                         String UserId = jObj.getString("UserId");
                         String RoleId = jObj.getString("RoleId");
                         String FirstName = jObj.getString("FirstName");
@@ -180,12 +183,12 @@ public class SignIn extends Activity implements View.OnClickListener {
                         String SurName = jObj.getString("SurName");
                         String JobRefNo = jObj.getString("JobRefNo");
                         String mKey="User";
-                        updateCredentials(UserId,RoleId,FirstName,MiddleName,SurName,JobRefNo,mKey);
+                        updateCredentials(UserId,RoleId,FirstName,MiddleName,SurName,JobRefNo,WardId,WardName,WardRefNo,mKey);
 
                         if(RoleId.equals("1")){getVillageJurisdictions();getFacilityJurisdictions();}else{}
 
 
-                       Intent intent = new Intent(
+                      Intent intent = new Intent(
                                 getBaseContext(),ChwHomePage.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -195,7 +198,7 @@ public class SignIn extends Activity implements View.OnClickListener {
 
 
                         hideDialog();
-                        finish();
+                        //finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -239,15 +242,15 @@ public class SignIn extends Activity implements View.OnClickListener {
 
 
 
-    public void updateCredentials(String UserId,String RoleId,String FirstName,String MiddleName,String SurName,String JobRefNo,String mKey) {
+    public void updateCredentials(String UserId,String RoleId,String FirstName,String MiddleName,String SurName,String JobRefNo,String WardId,String WardName,String WardRefNo,String mKey) {
 
         Cursor res = myDb.getAllCredentials();
 
         if (res.getCount() == 0) {
-            boolean success= myDb.insertData(UserId,RoleId,FirstName,MiddleName,SurName,JobRefNo,mKey);
+            boolean success= myDb.insertData(UserId,RoleId,FirstName,MiddleName,SurName,JobRefNo,WardId,WardName,WardRefNo,mKey);
             if(success==true){Toast.makeText(getBaseContext(), "Login was successful", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Error while logging in", Toast.LENGTH_LONG).show();}
             return;
-        }else{boolean success= myDb.updateCredentials(UserId,RoleId,FirstName,MiddleName,SurName,JobRefNo,mKey);
+        }else{boolean success= myDb.updateCredentials(UserId,RoleId,FirstName,MiddleName,SurName,JobRefNo,WardId,WardName,WardRefNo,mKey);
             if(success==true){Toast.makeText(getBaseContext(), "Login was successful", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Error while logging in", Toast.LENGTH_LONG).show();}}
 
 

@@ -19,6 +19,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_4="MiddleName";
     public static final String COL_5="SurName";
     public static final String COL_6="JobRefNo";
+    public static final String COL_91="WardId";
+    public static final String COL_92="WardName";
+    public static final String COL_93="WardRefNo";
     public static final String COL_7="mKey";
 
 
@@ -53,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_NAME + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR(200),RoleId VARCHAR(200),FirstName VARCHAR(200),MiddleName VARCHAR(200),SurName VARCHAR(200),JobRefNo VARCHAR(200),mKey VARCHAR(200))");
+        db.execSQL("CREATE TABLE " + TABLE_NAME + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR(200),RoleId VARCHAR(200),FirstName VARCHAR(200),MiddleName VARCHAR(200),SurName VARCHAR(200),JobRefNo VARCHAR(200),WardId VARCHAR(200),WardName VARCHAR(200),WardRefNo VARCHAR(200),mKey VARCHAR(200))");
         db.execSQL("CREATE TABLE " + TABLE_VILLAGE_JURISDICTION + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,VillageId VARCHAR(200),VillageName VARCHAR(200),VillageRefNo VARCHAR(200))");
         db.execSQL("CREATE TABLE " + TABLE_FACILITY_JURISDICTION + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,FacilityId VARCHAR(200),FacilityName VARCHAR(200),PhysicalAddress VARCHAR(500),FacilityRefNo VARCHAR(200))");
         db.execSQL("CREATE TABLE " + TABLE_CREDENTIALS + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,JobRefNo VARCHAR(200),Password VARCHAR(200),CredRowKey VARCHAR(500))");
@@ -72,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean insertData(String UserId,String RoleId,String FirstName,String MiddleName,String SurName,String JobRefNo,String mKey)
+    public boolean insertData(String UserId,String RoleId,String FirstName,String MiddleName,String SurName,String JobRefNo,String WardId,String WardName,String WardRefNo,String mKey)
     {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -82,6 +85,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_4, MiddleName);
         contentValues.put(COL_5, SurName);
         contentValues.put(COL_6, JobRefNo);
+        contentValues.put(COL_91, WardId);
+        contentValues.put(COL_92, WardName);
+        contentValues.put(COL_93, WardRefNo);
         contentValues.put(COL_7, mKey);
 
         long result=db.insert(TABLE_NAME,null,contentValues);
@@ -171,7 +177,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateCredentials(String UserId,String RoleId,String FirstName,String MiddleName,String SurName,String JobRefNo,String mKey)
+    public boolean updateCredentials(String UserId,String RoleId,String FirstName,String MiddleName,String SurName,String JobRefNo,String WardId,String WardName,String WardRefNo,String mKey)
     {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -181,6 +187,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_4, MiddleName);
         contentValues.put(COL_5, SurName);
         contentValues.put(COL_6, JobRefNo);
+        contentValues.put(COL_91, WardId);
+        contentValues.put(COL_92, WardName);
+        contentValues.put(COL_93, WardRefNo);
         contentValues.put(COL_7, mKey);
 
 
