@@ -73,7 +73,7 @@
             android:weightSum="1">
 
             <EditText
-                android:id="@+id/et_email_signUp"
+                android:id="@+id/et_middle_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -90,30 +90,6 @@
         </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:weightSum="1">
-
-            <EditText
-                android:id="@+id/et_email_signU"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight=".95"
-                android:background="@drawable/group_row"
-                android:hint="Last Name"
-                android:drawableLeft="@mipmap/person"
-                android:paddingBottom="8dp"
-                android:paddingEnd="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingStart="5dp"
-                android:paddingTop="8dp" />
-        </LinearLayout>
-
 
 
         <LinearLayout
@@ -124,14 +100,14 @@
             android:weightSum="1">
 
             <EditText
-                android:id="@+id/et_passwordLogin"
+                android:id="@+id/et_surname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight=".95"
                 android:background="@drawable/group_bottom"
                 android:drawableLeft="@mipmap/address"
-                android:hint="Phone Number"
+                android:hint="Surname"
                 android:paddingEnd="5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -147,6 +123,7 @@
 
 
         <CheckBox
+            android:id="@+id/cb_male"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="20dp"
@@ -156,6 +133,7 @@
             android:text="Male" />
 
         <CheckBox
+            android:id="@+id/cb_female"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
             android:layout_marginLeft="20dp"
@@ -186,12 +164,13 @@
                 android:weightSum="1">
 
                 <EditText
+                    android:id="@+id/et_phone_number"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight=".95"
                     android:background="@drawable/group_top"
-                    android:hint="Email(Optional)"
+                    android:hint="Phone Number"
                     android:drawableLeft="@mipmap/tribe"
                     android:inputType="text"
                     android:paddingBottom="8dp"
@@ -202,7 +181,29 @@
                     android:paddingTop="8dp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="1">
 
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight=".95"
+                    android:background="@drawable/group_row"
+                    android:hint="Email(Optional)"
+                    android:drawableLeft="@mipmap/person"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="8dp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -212,6 +213,7 @@
                 android:weightSum="1">
 
                 <EditText
+                    android:id="@+id/et_physical_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -237,13 +239,14 @@
                 android:weightSum="1">
 
                 <EditText
+                    android:id="@+id/et_parent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight=".95"
                     android:background="@drawable/group_bottom"
                     android:drawableLeft="@mipmap/work"
-                    android:hint="Parent"
+                    android:hint="Parent(New-borns)"
                     android:paddingEnd="5dp"
                     android:paddingLeft="5dp"
                     android:paddingTop="8dp"
