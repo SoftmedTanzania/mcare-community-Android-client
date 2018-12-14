@@ -235,5 +235,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public Cursor getAllRows(String TableName)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        Cursor res=db.rawQuery("SELECT * FROM " +TableName,null);
+        return res;
+    }
 
 }

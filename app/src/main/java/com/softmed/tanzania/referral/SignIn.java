@@ -312,6 +312,7 @@ public class SignIn extends Activity implements View.OnClickListener {
                 try {
                     JSONObject object = new JSONObject(s);
                     JSONArray jsonarray= object.getJSONArray("result");
+                    myDb.deleteEntireTable("chw_village_jurisdiction");
                     for(int i = 0; i<jsonarray.length(); i++){
 
                         //Creating a json object of the current index
@@ -327,7 +328,7 @@ public class SignIn extends Activity implements View.OnClickListener {
                             String VillageName=obj.getString("VillageName");
                             String VillageRefNo=obj.getString("VillageRefNo");
 
-                            myDb.deleteEntireTable("chw_village_jurisdiction");
+
                            boolean success= myDb.insertVillageJurisdiction(VillageId,VillageName,VillageRefNo);
                            if(success==true){Toast.makeText(getBaseContext(), "Locations configuration is ready", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Error while configuring locations", Toast.LENGTH_LONG).show();}
                         } catch (JSONException e) {
@@ -382,6 +383,7 @@ public class SignIn extends Activity implements View.OnClickListener {
                 try {
                     JSONObject object = new JSONObject(s);
                     JSONArray jsonarray= object.getJSONArray("result");
+                    myDb.deleteEntireTable("chw_facility_jurisdiction");
                     for(int i = 0; i<jsonarray.length(); i++){
 
                         //Creating a json object of the current index
@@ -398,7 +400,7 @@ public class SignIn extends Activity implements View.OnClickListener {
                             String PhysicalAddress=obj.getString("PhysicalAddress");
                             String FacilityRefNo=obj.getString("FacilityRefNo");
 
-                            myDb.deleteEntireTable("chw_facility_jurisdiction");
+
                             boolean success= myDb.insertFacilityJurisdiction(FacilityId,FacilityName,PhysicalAddress,FacilityRefNo);
                             if(success==true){Toast.makeText(getBaseContext(), "Facilities configuration is ready", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Error while configuring Facilities", Toast.LENGTH_LONG).show();}
                         } catch (JSONException e) {

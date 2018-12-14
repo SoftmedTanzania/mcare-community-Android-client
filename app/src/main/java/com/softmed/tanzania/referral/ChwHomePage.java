@@ -1,6 +1,12 @@
 package com.softmed.tanzania.referral;
 
+import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
+import android.database.Cursor;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -8,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,21 +25,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChwHomePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    String tata;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    AlertDialog alertDialog;
+    LayoutInflater inflater;
+    DatabaseHelper myDb;
+    ImageView imgCalender;
+    private int mYear, mMonth, mDay, mHour, mMinute;
+    public int Year,Month,Day,Hour,Minute,Seconds;
+    Button btnNext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chw_home_page);
-
+        myDb = new DatabaseHelper(this);
+        inflater=this.getLayoutInflater();
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -45,8 +65,8 @@ public class ChwHomePage extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                prepPersonalInfo();
+               // getAll();
             }
         });
 
@@ -155,6 +175,170 @@ public class ChwHomePage extends AppCompatActivity
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+
+    public void prepPersonalInfo()
+    {
+        View v= inflater.inflate(R.layout.personal_pop, null);
+        imgCalender=(ImageView) v.findViewById(R.id.calender);
+
+
+        btnNext = (Button) v.findViewById(R.id.btMore);
+
+
+        imgCalender.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                //alertDialog.cancel();
+                getDate();
+
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
+
+                prepLocation();
+
+            }
+        });
+        personalInfoPop(v);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void personalInfoPop(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(v);
+        builder.setCancelable(true);
+        alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void getDate()
+    {
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        //txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        //txtDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+
+                        Year=year;
+                        Month=(monthOfYear + 1);
+                        Day=dayOfMonth;
+
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+
+
+    public void prepLocation()
+    {
+        View v= inflater.inflate(R.layout.location_pop, null);
+
+        final ListView listview = (ListView) v.findViewById(R.id.my_list);
+        final ArrayList<MyBasket> list = new ArrayList<>();
+       Cursor res = myDb.getAllRows("chw_village_jurisdiction");
+
+        if (res.getCount() == 0) {
+            //Show message
+            //showMessage("No PaintShares Available", "You currently have no PaintShares saved");
+            return;
+        }
+
+
+
+        while (res.moveToNext()) {
+
+            list.add(new MyBasket(res.getString(1),res.getString(2)));
+
+        }
+
+
+        MyListAdapter adapter = new MyListAdapter(this, R.layout.my_custom_list, list);
+
+        //attaching adapter to the listview
+        listview.setAdapter(adapter);
+
+        btnNext = (Button) v.findViewById(R.id.btMore);
+
+
+
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
+                //prepClinic();
+
+            }
+        });
+        locationPop(v);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void locationPop(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+
+        builder.setView(v);
+
+        builder.setCancelable(true);
+        // builder.setTitle("Submit verification code");
+
+        //editText.setText("test label");
+
+        alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+
+
+    }
+
+
+    public void getAll(){
+
+        Cursor res = myDb.getAllRows("chw_village_jurisdiction");
+
+        if (res.getCount() == 0) {
+            //Show message
+            //showMessage("No PaintShares Available", "You currently have no PaintShares saved");
+            return;
+        }
+
+
+
+        while (res.moveToNext()) {
+
+          tata=res.getString(2);
+
+
+        }
+
+        Config.showMessage(this,"data",tata);
     }
 
 }

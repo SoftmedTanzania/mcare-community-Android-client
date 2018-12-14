@@ -1,5 +1,10 @@
 package com.softmed.tanzania.referral;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.os.Build;
+
 import java.io.IOException;
 
 public class Config {
@@ -14,4 +19,14 @@ public class Config {
         String command = "ping -c 1 google.com";
         return (Runtime.getRuntime().exec (command).waitFor() == 0);
     }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void showMessage(Context context,String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(true);
+        // builder.setView(R.layout.activity_main);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();}
 }
