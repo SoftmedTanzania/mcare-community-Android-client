@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +36,9 @@ import java.util.Map;
 
 public class MyListAdapter extends ArrayAdapter<MyBasket> {
     DatabaseHelper myDb;
+    AlertDialog myAlertDialog;
     LayoutInflater inflater;
     Button btContinueBook,btCancelBook;
-    android.app.AlertDialog alertDialog;
     List<MyBasket> mybasketList;
     Context context;
     int resource;
@@ -45,7 +46,7 @@ public class MyListAdapter extends ArrayAdapter<MyBasket> {
     String strVillageId,strVillageName,strVillageRefNo,strWardId,strWardName,strWardRefNo;
 
 
-    public MyListAdapter(Context context, int resource, List<MyBasket> mybasketList, String strFirstName, String strMiddleName, String strSurname, String strPhoneNumber, String strEmail, String strPhysicalAddress, String strParent, String strGender,String strDOB) {
+    public MyListAdapter(Context context, int resource, List<MyBasket> mybasketList, String strFirstName, String strMiddleName, String strSurname, String strPhoneNumber, String strEmail, String strPhysicalAddress, String strParent, String strGender,String strDOB,AlertDialog myAlertDialog) {
         super(context, resource, mybasketList);
         this.context = context;
         this.resource = resource;
@@ -60,6 +61,8 @@ public class MyListAdapter extends ArrayAdapter<MyBasket> {
         this.strParent = strParent;
         this.strGender = strGender;
         this.strDOB = strDOB;
+        this.myAlertDialog = myAlertDialog;
+
 
 
         inflater = (LayoutInflater) this.context.getSystemService(this.context.LAYOUT_INFLATER_SERVICE);
@@ -92,7 +95,9 @@ public class MyListAdapter extends ArrayAdapter<MyBasket> {
                     strVillageId=basket_object.getByServerId();
                     strVillageName=basket_object.getByName();
                     strVillageRefNo=basket_object.getByRefNo();
+                    myAlertDialog.cancel();
                     submitClientDetails();
+
                 }
 
             }

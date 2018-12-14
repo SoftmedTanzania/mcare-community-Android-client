@@ -39,13 +39,15 @@ public class ChwHomePage extends AppCompatActivity
   String mDate,strDOB,strGender,strFirstName,strMiddleName,strSurname,strPhoneNumber,strEmail,strPhysicalAddress,strParent;
   private TabLayout tabLayout;
   private ViewPager viewPager;
-  AlertDialog alertDialog;
+  AlertDialog alertDialog,myAlertDialog;
   LayoutInflater inflater;
   DatabaseHelper myDb;
   ImageView imgCalender;
   private int mYear, mMonth, mDay, mHour, mMinute;
   public int Year,Month,Day,Hour,Minute,Seconds;
   Button btnNext;
+  ArrayList<MyBasket> list;
+  ListView listview;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -231,7 +233,8 @@ public class ChwHomePage extends AppCompatActivity
       @Override
       public void onClick(View view) {
         //alertDialog.cancel();
-        strDOB=getDate();
+        getDate();
+
 
       }
     });
@@ -270,7 +273,7 @@ public class ChwHomePage extends AppCompatActivity
   }
 
   @RequiresApi(api = Build.VERSION_CODES.N)
-  public String getDate()
+  public void getDate()
   {
     // Get Current Date
     final Calendar c = Calendar.getInstance();
@@ -293,12 +296,14 @@ public class ChwHomePage extends AppCompatActivity
                 Month=(monthOfYear + 1);
                 Day=dayOfMonth;
 
+                strDOB =(Year + "-" + Month + "-" + Day);
+
               }
             }, mYear, mMonth, mDay);
     datePickerDialog.show();
-    mDate=Year + "-" + Month + "-" + Day;
 
-    return mDate;
+
+
   }
 
 
@@ -306,8 +311,8 @@ public class ChwHomePage extends AppCompatActivity
   {
     View v= inflater.inflate(R.layout.location_pop, null);
 
-    final ListView listview = (ListView) v.findViewById(R.id.my_list);
-    final ArrayList<MyBasket> list = new ArrayList<>();
+    listview = (ListView) v.findViewById(R.id.my_list);
+     list = new ArrayList<>();
     Cursor res = myDb.getAllRows("chw_village_jurisdiction");
 
     if (res.getCount() == 0) {
@@ -325,10 +330,10 @@ public class ChwHomePage extends AppCompatActivity
     }
 
 
-    MyListAdapter adapter = new MyListAdapter(this, R.layout.my_custom_list, list,strFirstName,strMiddleName,strSurname,strPhoneNumber,strEmail,strPhysicalAddress,strParent,strGender,strDOB);
+
 
     //attaching adapter to the listview
-    listview.setAdapter(adapter);
+
 
     btnNext = (Button) v.findViewById(R.id.btMore);
 
@@ -350,20 +355,15 @@ public class ChwHomePage extends AppCompatActivity
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public void locationPop(View v) {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-
-
     builder.setView(v);
-
     builder.setCancelable(true);
-    // builder.setTitle("Submit verification code");
+    myAlertDialog = builder.create();
 
-    //editText.setText("test label");
-
-    alertDialog = builder.create();
-    alertDialog.setCancelable(false);
-    alertDialog.setCanceledOnTouchOutside(false);
-    alertDialog.show();
+    MyListAdapter adapter = new MyListAdapter(this, R.layout.my_custom_list, list,strFirstName,strMiddleName,strSurname,strPhoneNumber,strEmail,strPhysicalAddress,strParent,strGender,strDOB,myAlertDialog);
+    listview.setAdapter(adapter);
+    myAlertDialog.setCancelable(false);
+    myAlertDialog.setCanceledOnTouchOutside(false);
+    myAlertDialog.show();
 
 
   }
