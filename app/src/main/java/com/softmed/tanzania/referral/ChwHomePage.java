@@ -270,7 +270,7 @@ public class ChwHomePage extends AppCompatActivity
 
         while (res.moveToNext()) {
 
-            list.add(new MyBasket(res.getString(1),res.getString(2)));
+            list.add(new MyBasket(res.getString(1),res.getString(2),res.getString(3)));
 
         }
 
@@ -319,26 +319,6 @@ public class ChwHomePage extends AppCompatActivity
     }
 
 
-    public void getAll(){
-
-        Cursor res = myDb.getAllRows("chw_village_jurisdiction");
-
-        if (res.getCount() == 0) {
-            //Show message
-            //showMessage("No PaintShares Available", "You currently have no PaintShares saved");
-            return;
-        }
-
-
-
-        while (res.moveToNext()) {
-
-          tata=res.getString(2);
-
-
-        }
-
-        Config.showMessage(this,"data",tata);
-    }
+    
 
 }
