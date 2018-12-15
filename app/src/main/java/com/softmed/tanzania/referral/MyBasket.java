@@ -21,7 +21,7 @@ public class MyBasket {
     }
 
     public String getByRefNo() {
-        return name;
+        return refno;
     }
 
 

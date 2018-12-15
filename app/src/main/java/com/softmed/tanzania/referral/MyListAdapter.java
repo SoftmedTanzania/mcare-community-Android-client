@@ -43,7 +43,7 @@ public class MyListAdapter extends ArrayAdapter<MyBasket> {
     Context context;
     int resource;
     String strFirstName,strMiddleName,strSurname,strPhoneNumber,strEmail,strPhysicalAddress,strParent,strGender,strDOB;
-    String strVillageId,strVillageName,strVillageRefNo,strWardId,strWardName,strWardRefNo;
+    String strVillageId,strVillageName,strVillageRefNo,strWardId,strWardName,strWardRefNo,strUserId;
 
 
     public MyListAdapter(Context context, int resource, List<MyBasket> mybasketList, String strFirstName, String strMiddleName, String strSurname, String strPhoneNumber, String strEmail, String strPhysicalAddress, String strParent, String strGender,String strDOB,AlertDialog myAlertDialog) {
@@ -154,7 +154,7 @@ public class MyListAdapter extends ArrayAdapter<MyBasket> {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-
+                params.put("UserId",strUserId);
                 params.put("FirstName",strFirstName);
                 params.put("MiddleName",strMiddleName);
                 params.put("SurName",strSurname);
@@ -197,7 +197,7 @@ public class MyListAdapter extends ArrayAdapter<MyBasket> {
 
 
         while (res.moveToNext()) {
-
+            strUserId=res.getString(1);
             strWardId=res.getString(7);
             strWardName=res.getString(8);
             strWardRefNo=res.getString(9);
