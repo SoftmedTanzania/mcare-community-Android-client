@@ -3,6 +3,7 @@ package com.softmed.tanzania.referral;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class FragmentOne extends Fragment {
     RecyclerView rView;
     ArrayList<ClientModel> clients_list;
     private GridLayoutManager lLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public FragmentOne() {
         // Required empty public constructor
@@ -44,7 +46,7 @@ public class FragmentOne extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_two, container, false);
+        View v = inflater.inflate(R.layout.fragment_one, container, false);
         UserId=Config.getCurrentSessionId(getActivity());
         clients_list = new ArrayList<>();
         lLayout = new GridLayoutManager(getActivity(), 1);
@@ -52,6 +54,22 @@ public class FragmentOne extends Fragment {
         rView = (RecyclerView) v.findViewById(R.id.recycler_view1);
         rView.setHasFixedSize(true);
         rView.setLayoutManager(lLayout);
+
+        swipeRefreshLayout=(SwipeRefreshLayout)v.findViewById(R.id.swipe_container);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+
+
+                clients_list.clear();
+
+                getSpecificChwClients();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         getSpecificChwClients();
         // Inflate the layout for this fragment
         return v;

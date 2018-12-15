@@ -24,7 +24,7 @@ public class MyRecyclerviewAdapter  extends RecyclerView.Adapter<MyRecyclerviewH
     @Override
     public MyRecyclerviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-      View layoutView = LayoutInflater.from(context).inflate(R.layout.location_pop,null);
+      View layoutView = LayoutInflater.from(context).inflate(R.layout.client_card,null);
         MyRecyclerviewHolder rcv = new MyRecyclerviewHolder(layoutView);
 
         return rcv;
@@ -33,15 +33,18 @@ public class MyRecyclerviewAdapter  extends RecyclerView.Adapter<MyRecyclerviewH
 
     @Override
     public void onBindViewHolder(MyRecyclerviewHolder holder, int position) {
-
+        holder.tvName.setText(clients_list.get(position).getByClientName());
+        holder.tvRegisteredDate.setText(clients_list.get(position).getByClientRegistrationDate());
+        holder.tvVillageName.setText(clients_list.get(position).getByClientVillageName());
+        holder.ClientId=(clients_list.get(position).getByClientId());
     }
 
 
     @Override
     public int getItemCount() {
 
-       //return this.FullNames.size();
-        return 0;
+       return this.clients_list.size();
+
     }
 
 
