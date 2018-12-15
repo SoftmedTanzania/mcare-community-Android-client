@@ -6,11 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 public class MyRecyclerviewAdapter  extends RecyclerView.Adapter<MyRecyclerviewHolder> {
     Context context;
+    private ArrayList<ClientModel> clients_list;
 
-    public MyRecyclerviewAdapter(Context context) {
+    public MyRecyclerviewAdapter(Context context,ArrayList<ClientModel> clients_list) {
 
+     this.clients_list=clients_list;
      this.context=context;
 
 

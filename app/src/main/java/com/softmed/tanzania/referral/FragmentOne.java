@@ -3,6 +3,8 @@ package com.softmed.tanzania.referral;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +32,9 @@ import java.util.Map;
  */
 public class FragmentOne extends Fragment {
     String UserId;
-    ArrayList<MyBasket> clients_list;
+    RecyclerView rView;
+    ArrayList<ClientModel> clients_list;
+    private GridLayoutManager lLayout;
 
     public FragmentOne() {
         // Required empty public constructor
@@ -40,11 +44,17 @@ public class FragmentOne extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_two, container, false);
         UserId=Config.getCurrentSessionId(getActivity());
         clients_list = new ArrayList<>();
+        lLayout = new GridLayoutManager(getActivity(), 1);
+
+        rView = (RecyclerView) v.findViewById(R.id.recycler_view1);
+        rView.setHasFixedSize(true);
+        rView.setLayoutManager(lLayout);
         getSpecificChwClients();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_one, container, false);
+        return v;
     }
 
 
@@ -90,18 +100,18 @@ public class FragmentOne extends Fragment {
                             String IsAChildOf=obj.getString("IsAChildOf");
                             String RegistrationDate=obj.getString("RegistrationDate");
 
-                            /*String VillageId=obj.getString("VillageId");
-                            String VillageName=obj.getString("VillageName");
-                            String VillageRefNo=obj.getString("VillageRefNo");*/
 
 
-                           // clients_list.add(new ClientModel());
+                            clients_list.add(new ClientModel(ClientId,UserId,FirstName,MiddleName,SurName,PhoneNumber,Email,PhysicalAddress,DOB,Gender,VillageId,VillageName,WardId,WardName,VillageRefNo,WardRefNo,IsAChildOf,RegistrationDate));
 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+                    MyRecyclerviewAdapter rcAdapter = new MyRecyclerviewAdapter(getActivity(),clients_list);
+                    rView.setAdapter(rcAdapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
