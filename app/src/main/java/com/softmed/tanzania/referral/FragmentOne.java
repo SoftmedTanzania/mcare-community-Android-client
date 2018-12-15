@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 public class FragmentOne extends Fragment {
     String UserId;
-
+    ArrayList<MyBasket> clients_list;
 
     public FragmentOne() {
         // Required empty public constructor
@@ -40,6 +41,7 @@ public class FragmentOne extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         UserId=Config.getCurrentSessionId(getActivity());
+        clients_list = new ArrayList<>();
         getSpecificChwClients();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_one, container, false);
@@ -65,16 +67,35 @@ public class FragmentOne extends Fragment {
                         //Creating a json object of the current index
                         JSONObject obj = null;
                         try {
-                            //getting json object from current index
+
                             obj = jsonarray.getJSONObject(i);
 
 
-                            //getting image url and title from json object
+                            String ClientId=obj.getString("ClientId");
+                            String UserId=obj.getString("UserId");
+                            String FirstName=obj.getString("FirstName");
+                            String MiddleName=obj.getString("MiddleName");
+                            String SurName=obj.getString("SurName");
+                            String PhoneNumber=obj.getString("PhoneNumber");
+                            String Email=obj.getString("Email");
+                            String PhysicalAddress=obj.getString("PhysicalAddress");
+                            String DOB=obj.getString("DOB");
+                            String Gender=obj.getString("Gender");
+                            String VillageId=obj.getString("VillageId");
+                            String VillageName=obj.getString("VillageName");
+                            String WardId=obj.getString("WardId");
+                            String WardName=obj.getString("WardName");
+                            String VillageRefNo=obj.getString("VillageRefNo");
+                            String WardRefNo=obj.getString("WardRefNo");
+                            String IsAChildOf=obj.getString("IsAChildOf");
+                            String RegistrationDate=obj.getString("RegistrationDate");
 
-                           /* String VillageId=obj.getString("VillageId");
+                            /*String VillageId=obj.getString("VillageId");
                             String VillageName=obj.getString("VillageName");
                             String VillageRefNo=obj.getString("VillageRefNo");*/
 
+
+                           // clients_list.add(new ClientModel());
 
 
                         } catch (JSONException e) {
