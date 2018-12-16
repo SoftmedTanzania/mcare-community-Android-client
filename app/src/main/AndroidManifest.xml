@@ -30,6 +30,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.softmed.tanzania.referral.SplashLauncher" />
         </activity>
+        <activity
+            android:name=".FacilityHomePage"
+            android:label="@string/title_activity_facility_home_page"
+            android:parentActivityName=".SplashLauncher"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.softmed.tanzania.referral.SplashLauncher" />
+        </activity>
     </application>
 
 </manifest>
