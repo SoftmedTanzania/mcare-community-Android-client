@@ -18,6 +18,7 @@ public class Config {
     public static final String client_registration =ip + "client_registration";
     public static final String get_my_clients =ip + "get_specific_client_registration";
     public static final String  get_my_facility=ip + "inner_join_facility_with_facility_staff";
+    public static final String  get_all_clients=ip + "get_all_client_registration";
 
 
 
