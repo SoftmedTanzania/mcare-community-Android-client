@@ -185,14 +185,32 @@ public class SignIn extends Activity implements View.OnClickListener {
                         String mKey="User";
                         updateCredentials(UserId,RoleId,FirstName,MiddleName,SurName,JobRefNo,WardId,WardName,WardRefNo,mKey);
 
-                        if(RoleId.equals("1")){getVillageJurisdictions();getFacilityJurisdictions();}else{}
+                        if(RoleId.equals("1")){getVillageJurisdictions();getFacilityJurisdictions();
+
+                            Intent intent = new Intent(
+                                    getBaseContext(),ChwHomePage.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            startActivity(intent);
+
+                        }else{
 
 
-                      Intent intent = new Intent(
-                                getBaseContext(),ChwHomePage.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getMyFacility();
 
-                        startActivity(intent);
+                            Intent intent = new Intent(
+                                    getBaseContext(),FacilityHomePage.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            startActivity(intent);
+
+
+
+
+                        }
+
+
+
 
 
 
@@ -425,6 +443,78 @@ public class SignIn extends Activity implements View.OnClickListener {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("column_name","WardId");
                 params.put("search_value",WardId);
+
+
+
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getBaseContext());
+        //Adding our request to the queue
+        requestQueue.add(stringRequest);
+    }
+
+
+
+
+    private void getMyFacility(){
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,Config.get_my_facility, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+
+
+
+                //Displaying our grid
+                try {
+                    JSONObject object = new JSONObject(s);
+                    JSONArray jsonarray= object.getJSONArray("result");
+
+                    for(int i = 0; i<jsonarray.length(); i++){
+
+                        //Creating a json object of the current index
+                        JSONObject obj = null;
+                        try {
+                            //getting json object from current index
+                            obj = jsonarray.getJSONObject(i);
+
+
+                            //getting image url and title from json object
+
+                            String FacilityId=obj.getString("FacilityId");
+                            String FacilityName=obj.getString("FacilityName");
+                            String PhysicalAddress=obj.getString("PhysicalAddress");
+                            String FacilityRefNo=obj.getString("FacilityRefNo");
+
+
+
+                            boolean success= myDb.updateMyFacility(FacilityId,FacilityName,PhysicalAddress,FacilityRefNo,"row");
+                            if(success==true){Toast.makeText(getBaseContext(), "Your facility configuration is ready", Toast.LENGTH_LONG).show();}else{Toast.makeText(getBaseContext(), "Error while configuring Your facility configuration", Toast.LENGTH_LONG).show();}
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("ggg", volleyError.toString());
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("UserId",UserId);
 
 
 

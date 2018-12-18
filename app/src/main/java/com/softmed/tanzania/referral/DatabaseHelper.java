@@ -46,6 +46,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_19="Password";
     public static final String COL_20="CredRowKey";
 
+    public static final String TABLE_MY_FACILITY="my_facility";
+    public static final String COL_21="dbId";
+    public static final String COL_22="FacilityId";
+    public static final String COL_23="FacilityName";
+    public static final String COL_24="PhysicalAddress";
+    public static final String COL_25="FacilityRefNo";
+    public static final String COL_26="FacRowKey";
+
 
 
 
@@ -60,9 +68,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_VILLAGE_JURISDICTION + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,VillageId VARCHAR(200),VillageName VARCHAR(200),VillageRefNo VARCHAR(200))");
         db.execSQL("CREATE TABLE " + TABLE_FACILITY_JURISDICTION + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,FacilityId VARCHAR(200),FacilityName VARCHAR(200),PhysicalAddress VARCHAR(500),FacilityRefNo VARCHAR(200))");
         db.execSQL("CREATE TABLE " + TABLE_CREDENTIALS + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,JobRefNo VARCHAR(200),Password VARCHAR(200),CredRowKey VARCHAR(500))");
+        db.execSQL("CREATE TABLE " + TABLE_MY_FACILITY + "(dbId INTEGER PRIMARY KEY AUTOINCREMENT,FacilityId VARCHAR(200),FacilityName VARCHAR(200),PhysicalAddress VARCHAR(500),FacilityRefNo VARCHAR(200),FacRowKey VARCHAR(500))");
 
         boolean cred_success=insertCredentials("8032","8032","row",db);
         if(cred_success==true){Toast.makeText(mcontext, "Local authentication ready", Toast.LENGTH_LONG).show();}else{Toast.makeText(mcontext, "Local authentication environment setup failed", Toast.LENGTH_LONG).show();}
+
+
+        boolean fac_success=insertMyFacility("8032","8032","8032","8032","row",db);
+        if(fac_success==true){Toast.makeText(mcontext, "Local authentication ready", Toast.LENGTH_LONG).show();}else{Toast.makeText(mcontext, "Local authentication environment setup failed", Toast.LENGTH_LONG).show();}
     }
 
     @Override
@@ -71,6 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_VILLAGE_JURISDICTION);
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_FACILITY_JURISDICTION);
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_CREDENTIALS);
+        db.execSQL("DROP TABLE IF EXISTS " +TABLE_MY_FACILITY);
         onCreate(db);
 
     }
@@ -160,6 +174,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean insertMyFacility(String FacilityId,String FacilityName,String PhysicalAddress,String FacilityRefNo,String FacRowKey,SQLiteDatabase db)
+    {
+        //SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(COL_22, FacilityId);
+        contentValues.put(COL_23, FacilityName);
+        contentValues.put(COL_24, PhysicalAddress);
+        contentValues.put(COL_25, FacilityRefNo);
+        contentValues.put(COL_26, FacRowKey);
+
+
+
+        long result=db.insert(TABLE_MY_FACILITY,null,contentValues);
+
+        if(result==-1)
+            return false;
+        else
+            return true;
+
+    }
+
+
 
 
 
@@ -220,6 +256,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         db.update(TABLE_CREDENTIALS,contentValues, "CredRowKey = ?",new String[] {CredRowKey});
+
+        return true;
+
+    }
+
+
+    public boolean updateMyFacility(String FacilityId,String FacilityName,String PhysicalAddress,String FacilityRefNo,String FacRowKey)
+    {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(COL_22, FacilityId);
+        contentValues.put(COL_23, FacilityName);
+        contentValues.put(COL_24, PhysicalAddress);
+        contentValues.put(COL_25, FacilityRefNo);
+        contentValues.put(COL_26, FacRowKey);
+
+
+        db.update(TABLE_MY_FACILITY,contentValues, "FacRowKey = ?",new String[] {FacRowKey});
 
         return true;
 
